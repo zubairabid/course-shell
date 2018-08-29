@@ -2,15 +2,21 @@
 #include <sys/utsname.h>
 #include <string.h>
 #include <unistd.h>
+#include <limits.h>
 
 int main() {
 
 	struct utsname buf;
-	char *hostname;
+	char *hostname, *cdir;
 
 	uname(&buf);
 	// HOST_NAME_MAX is not working, so I've used 255 instead
-	gethostname(hostname, 255);
+	gethostname(hostname, HOST_NAME_MAX);
+
+	// Getting pwd output
+	if (getcwd(cdir, PATH_MAX) != NULL) {
+		printf("No error finding path\n");
+	}
 
 	printf("%s\n", buf.sysname);
 	printf("%s\n", buf.nodename);
@@ -19,6 +25,7 @@ int main() {
 	printf("%s\n", buf.machine);
 	printf("%s\n", hostname);
 
+	printf("%s\n", cdir);
 	
 
 	return 0;
