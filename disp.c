@@ -5,6 +5,8 @@
 #include <limits.h>
 #include <stdlib.h>
 
+#include "disp.h"
+
 int prompt() {
 	struct utsname buf;
 	char *user = (char*)malloc(HOST_NAME_MAX);
@@ -16,5 +18,7 @@ int prompt() {
 	user = getenv("USER");
 	getcwd(cdir, PATH_MAX);
 
-	printf("%s@%s %s $ ", user, buf.nodename, cdir);
+	printf("\n%s@%s %s $ ", user, buf.nodename, cdir);
+
+	return 0;
 }

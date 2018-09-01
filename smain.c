@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include "disp.h"
 
 // Declaring all the functions to be used in the file
 int main(int argc, char** argv);
@@ -17,6 +18,7 @@ int main(int argc, char **argv) {
 	// Load from the configuration file?
 
 	// Run the program loop
+	loop();
 
 	// EXIT, Somehow I guess
 
@@ -29,14 +31,16 @@ int main(int argc, char **argv) {
 
 int loop() {
 	
-	char *line;
+	size_t bsize = 0;
+	char *line = (char*)malloc(bsize);
 	char **args;
 	int status;
 
 	do {
-		line = getline();
-		args = parseline();
-		status = exec(args);
+		prompt();
+		getline(&line, &bsize, stdin);
+		// args = parseline();
+		// status = exec(args);
 	} while(1);
 
 }
