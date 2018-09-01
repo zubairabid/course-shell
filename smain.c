@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include "util.h"
 #include "disp.h"
+
 
 // Declaring all the functions to be used in the file
 int main(int argc, char** argv);
@@ -14,7 +16,7 @@ int loop();
  * the shell together.
  */
 int main(int argc, char **argv) {
-	
+
 	// Load from the configuration file?
 
 	// Run the program loop
@@ -24,13 +26,13 @@ int main(int argc, char **argv) {
 
 }
 
-/* 
+/*
  * The REPL part of the shell. Large overview by definition, minor details
  * must be handled by various modules as constructed
  */
 
 int loop() {
-	
+
 	size_t bsize = 0;
 	char *line = (char*)malloc(bsize);
 	char **args;
@@ -39,7 +41,8 @@ int loop() {
 	do {
 		prompt();
 		getline(&line, &bsize, stdin);
-		// args = parseline();
+		args = parseline(line);
+
 		// status = exec(args);
 	} while(1);
 

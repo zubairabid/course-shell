@@ -18,7 +18,7 @@ int prompt() {
 	user = getenv("USER");
 	getcwd(cdir, PATH_MAX);
 
-	printf("\n%s@%s %s $ ", user, buf.nodename, cdir);
+	printf("\n<%s@%s:%s> ", user, buf.nodename, cdir);
 
 	return 0;
 }
