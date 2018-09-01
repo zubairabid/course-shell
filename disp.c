@@ -9,8 +9,8 @@
 
 int prompt() {
 	struct utsname buf;
-	char *user = (char*)malloc(HOST_NAME_MAX);
-	char *cdir = (char*)malloc(PATH_MAX);
+	char *user = (char*)malloc(HOST_NAME_MAX * sizeof(char*));
+	char *cdir = (char*)malloc(PATH_MAX * sizeof(char*));
 
 	// Getting system details
 	uname(&buf);
@@ -20,5 +20,5 @@ int prompt() {
 
 	printf("\n<%s@%s:%s> ", user, buf.nodename, cdir);
 
-	return 0;
+	return 1;
 }

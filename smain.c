@@ -4,7 +4,7 @@
 
 #include "util.h"
 #include "disp.h"
-
+#include "operation.h"
 
 // Declaring all the functions to be used in the file
 int main(int argc, char** argv);
@@ -43,7 +43,8 @@ int loop() {
 		getline(&line, &bsize, stdin);
 		args = parseline(line);
 
-		// status = exec(args);
-	} while(1);
+		status = run(args);
+	} while(status != 0);
 
+	return 0;
 }
