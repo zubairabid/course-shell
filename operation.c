@@ -24,6 +24,7 @@ int run(char **args) {
 }
 
 int startProc(char **args) {
+
   int pid, wpid, status;
 
   // Starting a new process in Unix

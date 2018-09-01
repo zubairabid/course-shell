@@ -41,6 +41,8 @@ int loop() {
 	do {
 		prompt();
 		getline(&line, &bsize, stdin);
+		if (*line == (char)10)
+			continue;
 		args = parseline(line);
 
 		status = run(args);
