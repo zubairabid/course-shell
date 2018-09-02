@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <limits.h>
+#include <dirent.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <string.h>
 
 #include "builtins.h"
 
@@ -10,8 +14,16 @@
  * Built-in functions include cd, pwd, exit.
  */
 
-int shcd(char **args) {
-  chdir(args[1]);
+int shcd(char **argv, int argc) {
+
+  char *location;
+  location = argv[1];
+
+  if (strcmp(location, "~") == 0) {
+    location = getenv("HOME");
+  }
+
+  chdir(location);
   return 1;
 }
 
@@ -20,7 +32,7 @@ int shpwd() {
   getcwd(cdir, PATH_MAX);
 
   printf("%s ", cdir);
-  return 0;
+  return 1;
 }
 
 int shexit() {

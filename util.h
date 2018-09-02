@@ -1,1 +1,1 @@
-char **parseline(char *line);
+char **parseline(char *line, int *argc);

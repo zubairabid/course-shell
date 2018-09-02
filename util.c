@@ -8,7 +8,7 @@
 #define BUF_DEFAULT 128
 
 // The function splits the line into a bunch of arguments to use
-char **parseline(char *line) {
+char **parseline(char *line, int *argc) {
 
   // bsize Defines expected size of array. May need to be redefined as per
   // use case. count is used as a counter variable to assign values to array
@@ -34,6 +34,7 @@ char **parseline(char *line) {
     token = strtok(NULL, DELIM_TOKEN);
   } while(token != NULL);
 
+  *argc = count;
   return tokens;
 
 }

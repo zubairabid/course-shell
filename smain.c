@@ -7,7 +7,7 @@
 #include "operation.h"
 
 // Declaring all the functions to be used in the file
-int main(int argc, char** argv);
+int main();
 int loop();
 
 
@@ -15,7 +15,7 @@ int loop();
  * Setup part of the code, that is executed first and compiles various parts of
  * the shell together.
  */
-int main(int argc, char **argv) {
+int main() {
 
 	// Load from the configuration file?
 
@@ -35,7 +35,8 @@ int loop() {
 
 	size_t bsize = 0;
 	char *line = (char*)malloc(bsize);
-	char **args;
+	char **argv;
+	int argc;
 	int status;
 
 	do {
@@ -43,9 +44,9 @@ int loop() {
 		getline(&line, &bsize, stdin);
 		if (*line == (char)10)
 			continue;
-		args = parseline(line);
+		argv = parseline(line, &argc);
 
-		status = run(args);
+		status = run(argv, argc);
 	} while(status != 0);
 
 	return 0;

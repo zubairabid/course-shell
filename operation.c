@@ -2,28 +2,35 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/wait.h>
 
 #include "operation.h"
 #include "builtins.h"
-//
-// int exit() {
-//   return 0;
-// }
+#include "ls.h"
 
-int run(char **args) {
 
-  if (strcmp(args[0],"cd") == 0) {
-    return shcd(args);
+int run(char **argv, int argc) {
+
+  // Running builting functions
+  if (strcmp(argv[0],"cd") == 0) {
+    return shcd(argv, argc);
   }
-  else if (strcmp(args[0],"exit") == 0) {
+  else if (strcmp(argv[0],"exit") == 0) {
     return shexit();
   }
+  else if (strcmp(argv[0],"pwd") == 0) {
+    return shpwd();
+  }
+  else if (strcmp(argv[0],"shls") == 0) {
+    return shls(argv, argc);
+  }
 
-  startProc(args);
+
+  startProc(argv, argc);
   return 1;
 }
 
-int startProc(char **args) {
+int startProc(char **argv, int argc) {
 
   int pid, wpid, status;
 
@@ -32,7 +39,7 @@ int startProc(char **args) {
 
   //Child Process. Loads new operation into this process with execvp
   if (pid == 0) {
-    execvp(args[0], args);
+    execvp(argv[0], argv);
     exit(EXIT_FAILURE);
   }
   // Parent Process

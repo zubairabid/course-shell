@@ -1,2 +1,2 @@
-int run(char **args);
-int startProc(char **args);
+int run(char **argv, int argc);
+int startProc(char **argv, int argc);
