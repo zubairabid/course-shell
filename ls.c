@@ -6,6 +6,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <string.h>
+#include <time.h>
 
 #include "ls.h"
 
@@ -13,30 +14,30 @@
 int shls(char **argv, int argc) {
   struct dirent **namelist;
   struct stat fdetails;
-  int n, i, opt, flags;
+  int n, i, j, opt, lflag = 0, aflag = 0;
 
-  char *dir = (char*)malloc(PATH_MAX*sizeof(char)), *filename, *filepath, *perm;
+  char *dir = (char*)malloc(PATH_MAX*sizeof(char)), *filename, *filepath, *perm, *times = (char*)malloc(20*sizeof(char)), *userp = (char*)malloc(256*sizeof(char)), *grpp = (char*)malloc(256*sizeof(char));
   perm = (char*)malloc(10*sizeof(char));
 
+  // get options
+  for(i = 1; i < argc; i++) {
+    // printf("Looking for options\n");
+    if(argv[i][0] == '-') {
+      // printf("Found - flag\n");
+      printf("%lu\n", strlen(argv[i]));
+      for(j = 1; j < strlen(argv[i]); j++) {
+        if(argv[i][j] == 'l') {
+          lflag = 1;
+        }
+        if(argv[i][j] == 'a') {
+          aflag = 1;
+        }
+      }
+    }
+  }
 
-
-  // while ((opt = getopt(argc, argv, "la")) != -1) {
-  //   printf("%c\n", opt);
-  //   switch(opt) {
-  //     case 'l':
-  //       printf("l got\n");
-  //       break;
-  //     case 'a':
-  //       printf("a got\n");
-  //       break;
-  //     case '?':
-  //       printf("%c got \n", opt);
-  //       break;
-  //     default:
-  //       printf("What got\n");
-  //   }
-  // }
-
+  // printf("lflag = %d\n", lflag);
+  // printf("aflag = %d\n", aflag);
 
   if (argc >= 2) {
     if (argv[1][0] == '-')
@@ -78,6 +79,7 @@ int shls(char **argv, int argc) {
       strcpy(perm, "----------");
       if(S_ISDIR(fdetails.st_mode))
         perm[0] = 'd';
+      
       if(fdetails.st_mode & S_IRUSR)
         perm[1] = 'r';
       if(fdetails.st_mode & S_IWUSR)
@@ -97,7 +99,39 @@ int shls(char **argv, int argc) {
       if(fdetails.st_mode & S_IXOTH)
         perm[9] = 'x';
 
-      printf("%s\t%d\t%d\t%ld\t%s\n", perm, fdetails.st_uid, fdetails.st_gid, fdetails.st_size, namelist[i]->d_name);
+
+      // dealing with the cases
+      if(aflag == 0) {
+        if(filename[0] == '.') {
+          continue;
+        }
+      }
+
+      if(lflag == 1) {
+        // printf("\n", );
+        strftime(times, 20, "%d-%m-%y", localtime(&(fdetails.st_ctime)));
+
+        if(fdetails.st_uid == 1000) {
+          userp = getenv("USER");
+        }
+        if(fdetails.st_gid == 1000) {
+          grpp = getenv("USER");
+        }
+        if(fdetails.st_uid == 0) {
+          userp = "root";
+        }
+        if(fdetails.st_gid == 0) {
+          grpp = "root";
+        }
+
+
+        printf("%s\t%s\t%s\t%ld\t%s\t%s\n", perm, userp, grpp, fdetails.st_size, times, namelist[i]->d_name);
+      }
+      else {
+        printf("%s\n", filename);
+      }
+
+
 
       free(namelist[i]);
       free(filepath);

@@ -30,7 +30,7 @@ In order to exit the shell, type `exit`
  - [x] Display
  - [x] `cd`, `pwd`, `exit`
  - [x] `echo`
- - [ ] ls
+ - [x] ls
  - [x] Execute processes
  - [x] Background process (no job)
  - [ ] pinfo

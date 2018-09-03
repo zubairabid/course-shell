@@ -55,7 +55,7 @@ int startProc(char **argv, int argc) {
 
     }
 
-    printf("%d exited %d\n", wpid, status);
+    // printf("%d exited %d\n", wpid, status);
   }
   // Error
   else {
