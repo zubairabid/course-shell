@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 
 #include "util.h"
 #include "disp.h"
@@ -35,18 +36,34 @@ int loop() {
 
 	size_t bsize = 0;
 	char *line = (char*)malloc(bsize);
+	char **lines;
 	char **argv;
 	int argc;
-	int status;
+	int status, i, num;
 
 	do {
 		prompt();
 		getline(&line, &bsize, stdin);
+
+		// deal with blank input
 		if (*line == (char)10)
 			continue;
-		argv = parseline(line, &argc);
 
-		status = run(argv, argc);
+		lines = splitlines(line, &num);
+
+		for(i = 0; i < num; i++) {
+			line = lines[i];
+
+			// blank input
+			if (*line == (char)10)
+				continue;
+
+			argv = parseline(line, &argc);
+			status = run(argv, argc);
+			if(status == 0)
+				break;
+		}
+
 	} while(status != 0);
 
 	return 0;

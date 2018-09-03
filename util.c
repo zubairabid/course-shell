@@ -38,3 +38,31 @@ char **parseline(char *line, int *argc) {
   return tokens;
 
 }
+
+char **splitlines(char *line, int *num) {
+  int bsize = BUF_DEFAULT, count = 0;
+
+  char *token;
+  char **tokens = (char**)malloc(bsize * sizeof(char*));
+
+  // Splitting the string into arguments. The loop manages most of the work
+  token = strtok(line, ";");
+  do {
+
+    // This would have done, but...
+    tokens[count++] = token;
+
+    // ... there's the possibility of overflow. So.
+    if(count >= bsize) {
+      bsize += BUF_DEFAULT;
+      tokens = realloc(tokens, bsize * sizeof(char*));
+    }
+
+    // next token time
+    token = strtok(NULL, ";");
+  } while(token != NULL);
+
+  *num = count;
+  return tokens;
+
+}

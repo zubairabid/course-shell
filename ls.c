@@ -14,7 +14,7 @@
 int shls(char **argv, int argc) {
   struct dirent **namelist;
   struct stat fdetails;
-  int n, i, j, opt, lflag = 0, aflag = 0;
+  int n, i, j, lflag = 0, aflag = 0;
 
   char *dir = (char*)malloc(PATH_MAX*sizeof(char)), *filename, *filepath, *perm, *times = (char*)malloc(20*sizeof(char)), *userp = (char*)malloc(256*sizeof(char)), *grpp = (char*)malloc(256*sizeof(char));
   perm = (char*)malloc(10*sizeof(char));
@@ -24,7 +24,7 @@ int shls(char **argv, int argc) {
     // printf("Looking for options\n");
     if(argv[i][0] == '-') {
       // printf("Found - flag\n");
-      printf("%lu\n", strlen(argv[i]));
+      // printf("%lu\n", strlen(argv[i]));
       for(j = 1; j < strlen(argv[i]); j++) {
         if(argv[i][j] == 'l') {
           lflag = 1;
@@ -51,7 +51,6 @@ int shls(char **argv, int argc) {
   else {
     dir = ".";
   }
-  printf("%s\n", dir);
 
   // Gets a list of all files in the namelist as a dirent struct
   n = scandir(dir, &namelist, NULL, alphasort);
@@ -79,7 +78,8 @@ int shls(char **argv, int argc) {
       strcpy(perm, "----------");
       if(S_ISDIR(fdetails.st_mode))
         perm[0] = 'd';
-      
+      if(S_ISLNK(fdetails.st_mode))
+        perm[0] = 'l';
       if(fdetails.st_mode & S_IRUSR)
         perm[1] = 'r';
       if(fdetails.st_mode & S_IWUSR)
