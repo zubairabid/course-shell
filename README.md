@@ -35,6 +35,8 @@ In order to exit the shell, type `exit`
  - [x] Background process (no job)
  - [ ] pinfo
  - [ ] Process exit notification
+ - [ ] Reminder
+ - [ ] Clock
 
 
 ### Stuff to note
