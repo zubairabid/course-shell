@@ -17,7 +17,12 @@
 int shcd(char **argv, int argc) {
 
   char *location;
-  location = argv[1];
+  if (argc == 1) {
+    location = "~";
+  }
+  else {
+    location = argv[1];
+  }
 
   if (strcmp(location, "~") == 0) {
     location = getenv("HOME");

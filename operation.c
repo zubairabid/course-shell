@@ -21,7 +21,7 @@ int run(char **argv, int argc) {
   else if (strcmp(argv[0],"pwd") == 0) {
     return shpwd();
   }
-  else if (strcmp(argv[0],"shls") == 0) {
+  else if (strcmp(argv[0],"ls") == 0) {
     return shls(argv, argc);
   }
 
@@ -44,10 +44,18 @@ int startProc(char **argv, int argc) {
   }
   // Parent Process
   else if (pid > 0){
-    // Make the parent process wait a bit, or shit does not get done
-    do {
-      wpid = waitpid(pid, &status, WUNTRACED);
-    } while (!WIFEXITED(status) && !WIFSIGNALED(status));
+    // Make the parent process wait a bit. Or not
+    if(argv[argc-1][0] == '&') {
+
+    }
+    else {
+      do {
+        wpid = waitpid(pid, &status, WUNTRACED);
+      } while (!WIFEXITED(status) && !WIFSIGNALED(status));
+
+    }
+
+    printf("%d exited %d\n", wpid, status);
   }
   // Error
   else {
