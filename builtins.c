@@ -43,3 +43,15 @@ int shpwd() {
 int shexit() {
   return 0;
 }
+
+// Basic echo. No support for double quoted shit
+int shecho(char **argv, int argc) {
+  int i;
+  // char *temp;
+  for(i = 1; i < argc; i++) {
+    // temp = argv[i];
+    printf("%s", argv[i]);
+  }
+  printf("\n");
+  return 1;
+}

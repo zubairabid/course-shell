@@ -29,10 +29,10 @@ In order to exit the shell, type `exit`
 ### Requirements covered so far
  - [x] Display
  - [x] `cd`, `pwd`, `exit`
- - [ ] `echo`
+ - [x] `echo`
  - [ ] ls
  - [x] Execute processes
- - [ ] Background process
+ - [x] Background process (no job)
  - [ ] pinfo
  - [ ] Process exit notification
 
@@ -54,4 +54,3 @@ An overview of how I think it'll function.
   - Command processing
   - Command execution
   - along with error handling
- 
