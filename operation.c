@@ -54,6 +54,7 @@ int startProc(char **argv, int argc) {
   //Child Process. Loads new operation into this process with execvp
   if (pid == 0) {
     execvp(argv[0], argv);
+    perror("Could not execute command");
     exit(EXIT_FAILURE);
   }
   // Parent Process

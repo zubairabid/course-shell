@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <errno.h>
 
 #include "util.h"
 #include "disp.h"
@@ -55,8 +56,10 @@ int loop() {
 			line = lines[i];
 
 			// blank input
-			if (*line == (char)10)
+			if (*line == (char)10) {
+				// perror("Please input something");
 				continue;
+			}
 
 			argv = parseline(line, &argc);
 			status = run(argv, argc);

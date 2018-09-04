@@ -28,7 +28,9 @@ int shcd(char **argv, int argc) {
     location = getenv("HOME");
   }
 
-  chdir(location);
+  if(chdir(location) == -1) {
+    perror("Could not cd into specified directory");
+  }
   return 1;
 }
 

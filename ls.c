@@ -55,6 +55,7 @@ int shls(char **argv, int argc) {
 
 
   if (n < 0) {
+    perror("Could not list files in directory");
     // Error
   }
   else {
