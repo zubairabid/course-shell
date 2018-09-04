@@ -3,6 +3,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <errno.h>
+#include <fcntl.h>
 
 #include "operation.h"
 #include "builtins.h"
@@ -36,6 +38,9 @@ int run(char **argv, int argc) {
   else if (strcmp(argv[0],"pinfo") == 0) {
     return pinfo(argv, argc);
   }
+  else if (strcmp(argv[0],"remindme") == 0) {
+    return remind(argv, argc);
+  }
 
   if(t == 1) {
     argc += 1;
@@ -59,6 +64,7 @@ int startProc(char **argv, int argc) {
   }
   // Parent Process
   else if (pid > 0){
+
     // Make the parent process wait a bit. Or not
     if(argv[argc-1][0] == '&') {
       // do {
@@ -77,8 +83,9 @@ int startProc(char **argv, int argc) {
   }
   // Error
   else {
-
+    perror("Error forking");
   }
+
 
   return 1;
 }

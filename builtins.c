@@ -6,6 +6,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <string.h>
+// #include <time.h>
 
 #include "builtins.h"
 
@@ -55,5 +56,31 @@ int shecho(char **argv, int argc) {
     printf("%s", argv[i]);
   }
   printf("\n");
+  return 1;
+}
+
+
+
+int remind(char **argv, int argc) {
+  if(argc <= 2) {
+    printf("Usage: remindme time reminder\n");
+    return 1;
+  }
+  int time;
+  time = strtol(argv[1], (char**)NULL, 10);
+  char *text = (char*)malloc(4096*sizeof(char));
+  int i;
+  strcpy(text, argv[2]);
+  // printf("no\n");
+  for(i = 3; i < argc; i++) {
+    strcat(text, " ");
+    strcat(text, argv[i]);
+  }
+  switch (fork()) {
+    case 0:
+      sleep(time);
+      printf("\n\nReminder: %s\n", text);
+      break;
+  }
   return 1;
 }
