@@ -11,6 +11,14 @@
 
 int run(char **argv, int argc) {
 
+  int t = 0;
+
+  // Hack to pass requirement
+  if(argv[argc-1][0] == '&') {
+    argc -= 1;
+    t = 1;
+  }
+
   // Running builting functions
   if (strcmp(argv[0],"cd") == 0) {
     return shcd(argv, argc);
@@ -25,7 +33,9 @@ int run(char **argv, int argc) {
     return shls(argv, argc);
   }
 
-
+  if(t == 1) {
+    argc += 1;
+  }
   startProc(argv, argc);
   return 1;
 }
@@ -46,13 +56,16 @@ int startProc(char **argv, int argc) {
   else if (pid > 0){
     // Make the parent process wait a bit. Or not
     if(argv[argc-1][0] == '&') {
-
+      // do {
+      //   wpid = waitpid(pid, &status, WNOHANG);
+      // } while(!WIFEXITED(status) && !WIFSIGNALED(status));
+      // printf("exited %d\n", status);
     }
     else {
       do {
         wpid = waitpid(pid, &status, WUNTRACED);
       } while (!WIFEXITED(status) && !WIFSIGNALED(status));
-
+      // printf("%d exited %d\n", wpid, status);
     }
 
     // printf("%d exited %d\n", wpid, status);

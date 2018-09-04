@@ -39,18 +39,15 @@ int shls(char **argv, int argc) {
   // printf("lflag = %d\n", lflag);
   // printf("aflag = %d\n", aflag);
 
-  if (argc >= 2) {
-    if (argv[1][0] == '-')
-      if (argc == 3)
-        dir = argv[2];
-      else
-        dir = ".";
-    else
-      dir = argv[1];
+  // get directory to print
+  for(i = 1; i < argc; i++) {
+    if(argv[i][0] == '-')
+      continue;
+    dir = argv[i];
   }
-  else {
+  if (argc == 1 || argv[argc-1][0] == '-')
     dir = ".";
-  }
+
 
   // Gets a list of all files in the namelist as a dirent struct
   n = scandir(dir, &namelist, NULL, alphasort);
