@@ -7,6 +7,7 @@
 #include "operation.h"
 #include "builtins.h"
 #include "ls.h"
+#include "pinfo.h"
 
 
 int run(char **argv, int argc) {
@@ -31,6 +32,9 @@ int run(char **argv, int argc) {
   }
   else if (strcmp(argv[0],"ls") == 0) {
     return shls(argv, argc);
+  }
+  else if (strcmp(argv[0],"pinfo") == 0) {
+    return pinfo(argv, argc);
   }
 
   if(t == 1) {

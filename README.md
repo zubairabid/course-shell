@@ -33,7 +33,7 @@ In order to exit the shell, type `exit`
  - [x] ls
  - [x] Execute processes
  - [x] Background process (no job)
- - [ ] pinfo
+ - [x] pinfo
  - [ ] Process exit notification
  - [ ] Reminder
  - [ ] Clock
