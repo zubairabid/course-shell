@@ -55,8 +55,7 @@ int loop() {
 		//			FLOW: Split lines into multiple commands by ';' etc
 		//			and count them into num (passed as a pointer)
 		commands = splitlines(line, &num);
-		printf("Processed lines into %d commands\n", num);
-
+	
 		//			FLOW: Process each command extracted
 		for(i = 0; i < num; i++) {
 			command = commands[i];
