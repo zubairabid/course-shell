@@ -47,6 +47,8 @@ int loop() {
 
 	// signal(SIGINT, SIG_IGN);
 	do {
+		// Print any process IDs
+		signal(SIGCHLD, notification);
 
 		//			FLOW: Display prompt and get input
 		prompt();
@@ -55,7 +57,7 @@ int loop() {
 		//			FLOW: Split lines into multiple commands by ';' etc
 		//			and count them into num (passed as a pointer)
 		commands = splitlines(line, &num);
-	
+
 		//			FLOW: Process each command extracted
 		for(i = 0; i < num; i++) {
 			command = commands[i];

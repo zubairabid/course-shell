@@ -5,11 +5,13 @@
 #include <sys/wait.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <signal.h>
 
 #include "operation.h"
 #include "builtins.h"
 #include "ls.h"
 #include "pinfo.h"
+#include "util.h"
 
 /*
  * Principal exec function.
@@ -19,9 +21,10 @@
  */
 int run(char **argv, int argc) {
 
+  // Flag, check if builtin was invoked and keep track of & existence
   int t = 0;
 
-  // Hack to pass requirement
+  // Hack to pass requirement of no & in builtins
   if(argv[argc-1][0] == '&') {
     argc -= 1;
     t = 1;
@@ -31,7 +34,7 @@ int run(char **argv, int argc) {
   if (strcmp(argv[0],"cd") == 0) {
     return shcd(argv, argc);
   }
-  else if (strcmp(argv[0],"exit") == 0) {
+  else if (strcmp(argv[0],"quit") == 0) {
     return shexit();
   }
   else if (strcmp(argv[0],"pwd") == 0) {
@@ -47,11 +50,12 @@ int run(char **argv, int argc) {
     return remind(argv, argc);
   }
 
+  // If & exists in command end
   if(t == 1) {
     argc += 1;
   }
-  startProc(argv, argc);
-  return 1;
+
+  return startProc(argv, argc);
 }
 
 int startProc(char **argv, int argc) {
@@ -72,19 +76,13 @@ int startProc(char **argv, int argc) {
 
     // Make the parent process wait a bit. Or not
     if(argv[argc-1][0] == '&') {
-      // do {
-      //   wpid = waitpid(pid, &status, WNOHANG);
-      // } while(!WIFEXITED(status) && !WIFSIGNALED(status));
-      // printf("exited %d\n", status);
     }
     else {
       do {
         wpid = waitpid(pid, &status, WUNTRACED);
       } while (!WIFEXITED(status) && !WIFSIGNALED(status));
-      // printf("%d exited %d\n", wpid, status);
     }
 
-    // printf("%d exited %d\n", wpid, status);
   }
   // Error
   else {

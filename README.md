@@ -10,6 +10,8 @@ This is an implementation of a basic interactive shell done in C as an assignmen
 
 In order to exit the shell, type `exit`
 
+## Files present, and file structure
+
 ## Requirements as specified
 
 ### Minimum requirements to be met:
@@ -26,7 +28,14 @@ In order to exit the shell, type `exit`
 7. Implement a 'remind me' functionality (optional)
 8. Add a clock (optional)
 
-### Requirements covered so far
+### R2: Minimum Requirements to be met:
+1. Implement foreground and background processes properly
+2. Input/Output redirection
+3. Command redirection with pipes
+4. I/O + pipe redirection
+5. Implement `setenv`, `getenv`, `jobs`, `kjob`, `fg`, `bg`, `overkill`, `quit`, `^Z`, `^C`
+
+### Requirements covered so far:
  - [x] Display
  - [x] `cd`, `pwd`, `exit`
  - [x] `echo`
@@ -37,16 +46,23 @@ In order to exit the shell, type `exit`
  - [ ] Process exit notification
  - [x] Reminder
  - [ ] Clock
+ - [ ] Proper FG/BG
+ - [ ] I/O Redirection
+ - [ ] Command Redirection, pipes
+ - [ ] I/O+pipes
+ - [ ] setenv, getenv
+ - [ ] jobs, kjo, overkill
+ - [ ] fg, bg, ^Z
+ - [ ] quit, ^C
 
-
-### Stuff to note
+### Stuff to note:
 
 1. Usage of `system` is strictly prohibited.
 2. Get error handling right
 3. rollnum_assgn2.tar.gz
 
 
-## Basic Outline:
+## Basic Outline
 
 An overview of how I think it'll function.
 

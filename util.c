@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <signal.h>
 
 #include "util.h"
 
@@ -71,6 +72,7 @@ char **splitlines(char *line, int *num) {
 
     // Add token value from previous iteration into array of tokens
     commands[count++] = command;
+    strcat(commands[count-1], "\0");
 
     // In case of overflow of array, reassign memory
     if(count >= bsize) {
@@ -87,4 +89,12 @@ char **splitlines(char *line, int *num) {
 
   return commands;
 
+}
+
+
+// SIGNAL HANDLERS
+
+void notification(int signum) {
+  perror("\nHello");
+  return 1;
 }
