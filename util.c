@@ -5,64 +5,86 @@
 #include "util.h"
 
 #define DELIM_TOKEN " \t\r\f\a\n"
+#define COMMAND_DELIM_TOKEN ";"
 #define BUF_DEFAULT 128
 
-// The function splits the line into a bunch of arguments to use
+
+/*
+ * Splits each line into tokens by DELIM_TOKEN
+ * Stores number of tokens into pointer variable 'argc'
+ *
+ * Returns: Array of tokens **tokens
+ */
 char **parseline(char *line, int *argc) {
 
-  // bsize Defines expected size of array. May need to be redefined as per
-  // use case. count is used as a counter variable to assign values to array
+  // bsize Defines expected size of array. Default BUF_DEFAULT
+  // count is used as a counter variable to assign values to array
   int bsize = BUF_DEFAULT, count = 0;
 
   char *token;
   char **tokens = (char**)malloc(bsize * sizeof(char*));
 
-  // Splitting the string into arguments. The loop manages most of the work
+  // Tokenizing the string: initial token extracted
   token = strtok(line, DELIM_TOKEN);
   do {
 
-    // This would have done, but...
+    // Add token value from previous iteration into array of tokens
     tokens[count++] = token;
 
-    // ... there's the possibility of overflow. So.
+    // In case of overflow of array, reassign memory
     if(count >= bsize) {
       bsize += BUF_DEFAULT;
       tokens = realloc(tokens, bsize * sizeof(char*));
     }
 
-    // next token time
+    // extract the next token
     token = strtok(NULL, DELIM_TOKEN);
   } while(token != NULL);
 
+  // Saves the number of tokens extracted into pointer 'argc'
   *argc = count;
+
+  // Return the array of tokens
   return tokens;
 
 }
 
+
+/*
+ * Splits the command into separate commands based on COMMAND_DELIM_TOKEN
+ * Stores number of commands into pointer variable 'num'
+ *
+ * Returns: Array of commands **commands
+ */
 char **splitlines(char *line, int *num) {
+
+  // bsize Defines expected size of array. Default BUF_DEFAULT
+  // count is used as a counter variable to assign values to array
   int bsize = BUF_DEFAULT, count = 0;
 
-  char *token;
-  char **tokens = (char**)malloc(bsize * sizeof(char*));
+  char *command;
+  char **commands = (char**)malloc(bsize * sizeof(char*));
 
-  // Splitting the string into arguments. The loop manages most of the work
-  token = strtok(line, ";");
+  // Tokenizing the string: initial token extracted
+  command = strtok(line, COMMAND_DELIM_TOKEN);
   do {
 
-    // This would have done, but...
-    tokens[count++] = token;
+    // Add token value from previous iteration into array of tokens
+    commands[count++] = command;
 
-    // ... there's the possibility of overflow. So.
+    // In case of overflow of array, reassign memory
     if(count >= bsize) {
       bsize += BUF_DEFAULT;
       tokens = realloc(tokens, bsize * sizeof(char*));
     }
 
-    // next token time
-    token = strtok(NULL, ";");
-  } while(token != NULL);
+    // extract the next token
+    command = strtok(NULL, ";");
+  } while(command != NULL);
 
+  // Saves the number of tokens extracted into pointer 'num'
   *num = count;
-  return tokens;
 
+  return commands;
+  
 }

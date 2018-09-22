@@ -3,6 +3,8 @@
 #include <unistd.h>
 #include <string.h>
 #include <errno.h>
+#include <signal.h>
+#include <sys/signal.h>
 
 #include "util.h"
 #include "disp.h"
@@ -37,12 +39,16 @@ int loop() {
 
 	size_t bsize = 0;
 	char *line = (char*)malloc(bsize);
-	char **lines;
+	char *command = (char*)malloc(bsize);
+	char **commands;
 	char **argv;
 	int argc;
 	int status, i, num;
 
+	// signal(SIGINT, SIG_IGN);
 	do {
+
+		//			FLOW: Display prompt and get input
 		prompt();
 		getline(&line, &bsize, stdin);
 
@@ -50,18 +56,25 @@ int loop() {
 		if (*line == (char)10)
 			continue;
 
-		lines = splitlines(line, &num);
+		//			FLOW: Split lines into multiple commands by ';' etc
+		//			and count them into num (passed as a pointer)
+		commands = splitlines(line, &num);
 
+		//			FLOW: Process each command extracted
 		for(i = 0; i < num; i++) {
-			line = lines[i];
+			command = commands[i];
 
 			// blank input
-			if (*line == (char)10) {
+			if (*command == (char)10) {
 				// perror("Please input something");
 				continue;
 			}
 
-			argv = parseline(line, &argc);
+			//			FLOW: Get all tokens in the each command
+			//			and store the count in argc
+			argv = parseline(command, &argc);
+
+			//			FLOW: Execute the command - get the exit status
 			status = run(argv, argc);
 			if(status == 0)
 				break;
