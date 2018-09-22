@@ -75,7 +75,7 @@ char **splitlines(char *line, int *num) {
     // In case of overflow of array, reassign memory
     if(count >= bsize) {
       bsize += BUF_DEFAULT;
-      tokens = realloc(tokens, bsize * sizeof(char*));
+      commands = realloc(commands, bsize * sizeof(char*));
     }
 
     // extract the next token
@@ -86,5 +86,5 @@ char **splitlines(char *line, int *num) {
   *num = count;
 
   return commands;
-  
+
 }

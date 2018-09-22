@@ -11,7 +11,12 @@
 #include "ls.h"
 #include "pinfo.h"
 
-
+/*
+ * Principal exec function.
+ * Splits commands into builtins and otherwise, and processes according
+ *
+ * Returns: Exit status
+ */
 int run(char **argv, int argc) {
 
   int t = 0;
