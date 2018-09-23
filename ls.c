@@ -21,10 +21,7 @@ int shls(char **argv, int argc) {
 
   // get options
   for(i = 1; i < argc; i++) {
-    // printf("Looking for options\n");
     if(argv[i][0] == '-') {
-      // printf("Found - flag\n");
-      // printf("%lu\n", strlen(argv[i]));
       for(j = 1; j < strlen(argv[i]); j++) {
         if(argv[i][j] == 'l') {
           lflag = 1;
@@ -35,9 +32,6 @@ int shls(char **argv, int argc) {
       }
     }
   }
-
-  // printf("lflag = %d\n", lflag);
-  // printf("aflag = %d\n", aflag);
 
   // get directory to print
   for(i = 1; i < argc; i++) {

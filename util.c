@@ -4,6 +4,7 @@
 #include <signal.h>
 
 #include "util.h"
+#include "disp.h"
 
 #define DELIM_TOKEN " \t\r\f\a\n"
 #define COMMAND_DELIM_TOKEN ";"
@@ -31,6 +32,7 @@ char **parseline(char *line, int *argc) {
 
     // Add token value from previous iteration into array of tokens
     tokens[count++] = token;
+    strcat(tokens[count-1], "\0"); // null terminating strings for bugfix
 
     // In case of overflow of array, reassign memory
     if(count >= bsize) {
@@ -72,7 +74,7 @@ char **splitlines(char *line, int *num) {
 
     // Add token value from previous iteration into array of tokens
     commands[count++] = command;
-    strcat(commands[count-1], "\0");
+    strcat(commands[count-1], "\0"); // null terminating strings for bugfix
 
     // In case of overflow of array, reassign memory
     if(count >= bsize) {
@@ -94,7 +96,15 @@ char **splitlines(char *line, int *num) {
 
 // SIGNAL HANDLERS
 
-void notification(int signum) {
-  perror("\nHello");
-  return 1;
+void sig_int(int signum) {
+
+}
+
+void sig_stop(int signum) {
+
+}
+
+void sig_child(int signum) {
+  // perror("\nProcess terminated");
+  return;
 }

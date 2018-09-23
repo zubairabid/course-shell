@@ -1,3 +1,5 @@
 char **parseline(char *line, int *argc);
 char **splitlines(char *line, int *num);
-void notification(int signum);
+void sig_child(int signum);
+void sig_stop(int signum);
+void sig_int(int signum);

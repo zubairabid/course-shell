@@ -45,10 +45,11 @@ int loop() {
 	int argc;
 	int status, i, num;
 
-	// signal(SIGINT, SIG_IGN);
+	signal(SIGINT, sig_int);
+	signal(SIGSTOP, sig_stop);
+	// Print any process IDs
+	signal(SIGCHLD, sig_child);
 	do {
-		// Print any process IDs
-		signal(SIGCHLD, notification);
 
 		//			FLOW: Display prompt and get input
 		prompt();

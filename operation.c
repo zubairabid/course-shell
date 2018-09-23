@@ -12,6 +12,7 @@
 #include "ls.h"
 #include "pinfo.h"
 #include "util.h"
+#include "redirection.h"
 
 /*
  * Principal exec function.
@@ -21,10 +22,17 @@
  */
 int run(char **argv, int argc) {
 
+  // For pipes, redirection is done
+  for(int i = 0; i < argc; i++) {
+    if (argv[i][0] == '<' || argv[i][0] == '>') {
+      return redirect(argv, argc);
+    }
+  }
+
   // Flag, check if builtin was invoked and keep track of & existence
   int t = 0;
 
-  // Hack to pass requirement of no & in builtins
+  // Hack to pass requirement of no '&' in builtins
   if(argv[argc-1][0] == '&') {
     argc -= 1;
     t = 1;
