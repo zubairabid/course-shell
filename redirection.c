@@ -94,7 +94,7 @@ int redirect(char **argv, int argc) {
     close(in);
   }
 
-  int ret = startProc(command, temp);
+  int ret = exe(command, temp);
 
   dup2(stdin_s, 0);
   dup2(stdout_s, 1);

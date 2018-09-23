@@ -29,6 +29,10 @@ int run(char **argv, int argc) {
     }
   }
 
+  return exe(argv, argc);
+}
+
+int exe(char **argv, int argc) {
   // Flag, check if builtin was invoked and keep track of & existence
   int t = 0;
 

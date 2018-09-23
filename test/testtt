@@ -1,0 +1,10 @@
+total 36
+drwxrwxr-x 2 zubair zubair 4096 Sep 23 20:36 .
+drwxrwxr-x 5 zubair zubair 4096 Sep 23 20:21 ..
+-rwxrwxr-x 1 zubair zubair 8872 Sep 23 01:34 a.out
+-rw-r--r-- 1 zubair zubair   96 Sep 23 18:11 nothingmore
+-rw-r--r-- 1 zubair zubair    8 Sep 23 18:14 test
+-rw-rw-r-- 1 zubair zubair    0 Sep 23 20:34 test1
+-rw-rw-r-- 1 zubair zubair  712 Sep 23 01:34 test1.c
+-rw-r--r-- 1 zubair zubair    8 Sep 23 18:22 test2
+-rw-r--r-- 1 zubair zubair    0 Sep 23 20:36 testtt
