@@ -1,0 +1,14 @@
+builtins.c
+disp.c
+include
+ls.c
+makefile
+operation.c
+pinfo.c
+pipe.c
+README.md
+redirection.c
+shell
+smain.c
+test
+util.c

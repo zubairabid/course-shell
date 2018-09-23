@@ -13,16 +13,70 @@
 #include "pinfo.h"
 #include "util.h"
 #include "redirection.h"
+#include "pipe.h"
 
 /*
- * Principal exec function.
- * Splits commands into builtins and otherwise, and processes according
+ * Principal exec function to split command into pipeline
+ * Splits command into pipeline and runs the pipeline
  *
  * Returns: Exit status
  */
 int run(char **argv, int argc) {
 
-  // For pipes, redirection is done
+  // Flow: check for all pipes, split commands and parent/child processes
+  // accordingly. Then for each of these, process with redirection etc as
+  // per normal
+  // printf("About to split pipes\n");
+  char ***all_com = NULL;
+  all_com = pipe_split(argv, argc, all_com);
+  for (char **i = *all_com; i != NULL; i = i + 1) {
+    printf("%s\n", *i);
+    for (char *j = *i; j != NULL; j = j + 1) {
+      printf("I lived agains, bih\n");
+      printf("%s ", j);
+    }
+    printf("\n");
+    printf("%s\n", *i);
+  }
+
+  int fdes[2], ret;
+  pid_t pid;
+  int fd_in = 0;
+
+  while(*all_com != NULL) {
+    pipe(fdes);
+    pid = fork();
+    if (pid == -1) {
+      perror("fork");
+      exit(EXIT_FAILURE);
+    }
+    else if (pid == 0) {
+      dup2(fd_in, 0);
+      if (*(all_com + 1) != NULL)
+        dup2(fdes[1], 1);
+      close(fdes[0]);
+      ret = prex(*all_com);
+    }
+    else {
+      wait(NULL);
+      close(fdes[1]);
+      fd_in = fdes[0];
+      all_com++;
+    }
+  }
+
+  return 1;
+}
+
+/*
+ * Gets argument count in the value passed by pipe and sets up IO redirect
+ * Continues normal execution if nothing else happens
+ */
+int prex(char **argv) {
+  int argc = 1; // Length of the string to process is in this
+  while(*argv != NULL)
+    argc++;
+
   for(int i = 0; i < argc; i++) {
     if (argv[i][0] == '<' || argv[i][0] == '>') {
       return redirect(argv, argc);
@@ -32,6 +86,10 @@ int run(char **argv, int argc) {
   return exe(argv, argc);
 }
 
+/*
+ * Primary execution function. Separates builtins out, passes others
+ * to primary execvp executor function
+ */
 int exe(char **argv, int argc) {
   // Flag, check if builtin was invoked and keep track of & existence
   int t = 0;
