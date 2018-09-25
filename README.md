@@ -47,13 +47,13 @@ In order to exit the shell, type `exit`
  - [x] Reminder
  - [ ] Clock
  - [ ] Proper FG/BG
- - [~] I/O Redirection
- - [~] Command Redirection, pipes
- - [ ] I/O+pipes
+ - [x] I/O Redirection
+ - [x] Command Redirection, pipes
+ - [x] I/O+pipes
  - [ ] setenv, getenv
  - [ ] jobs, kjo, overkill
  - [ ] fg, bg, ^Z
- - [x] quit, ^C
+ - [ ] quit, ^C
 
 ### Stuff to note:
 
