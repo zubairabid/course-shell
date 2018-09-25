@@ -8,40 +8,72 @@
 #include <sys/stat.h>
 
 int main() {
-	pid_t pid1, pid2;
-	int pipefd[2];
+	pid_t pid;
+	int fdes[2];
+	fdes[0]=0;
+	fdes[1]=0;
+  int fd_in = 0;
+	int c = 0;
 
-	char *argv1[] = {"cat", "test3", NULL};
-	char *argv2[] = {"wc", "-c", NULL};
+	int orig[2];
 
-	pipe(pipefd);
+	char *args[128][128] = {
+		{"ls",  NULL},
+		{"grep", "e", NULL},
+		{"sort", NULL},
+		{NULL}
+	};
 
-	pid1 = fork();
+	int i = 0;
 
-	if (pid1 == -1) {
-		perror("fork");
+	printf("Starting args\n");
+	while (*args[c] != NULL) {
+
+		// printf("Inside loop: args[c] is \n");
+		char *command[128];
+		for (i = 0; args[c][i] != NULL; i++) {
+			command[i] = args[c][i];
+			// printf("%s ", args[c][i]);
+		}
+		command[i] = NULL;
+		// printf("\n");
+
+
+		pipe(fdes);
+		pid = fork();
+		if (pid == -1) {
+			perror("fork");
+			exit(EXIT_FAILURE);
+		}
+    else if (pid == 0) {
+			// printf("In child, args[%d] = %s\n", c, args[c]);
+      dup2(fd_in, 0);
+
+			printf("Closed fdes[0] in child\n");
+			close(fdes[0]);
+
+			printf("Executing\n");
+			for(i = 0; command[i] != NULL; i++) {
+				printf("%s ", command[i]);
+			}
+			printf("\n");
+
+      if (*args[c+1] != NULL) {
+				printf("Setting STDOUT to fdes[1]\n");
+				printf("\n");
+				dup2(fdes[1], 1);
+			}
+      execvp(command[0], command);
+			exit(EXIT_FAILURE);
+    }
+    else {
+      wait(NULL);
+      close(fdes[1]);
+      fd_in = fdes[0];
+			c++;
+    }
+		int status;
+		waitpid(pid, &status, WUNTRACED);
 	}
-	if (pid1 == 0) {
-		dup2(pipefd[1], STDOUT_FILENO);
-		close(pipefd[0]);
-		execvp(argv1[0], argv1);
-		perror("exec");
-		return 1;
-	}
-
-
-	else {
-		dup2(pipefd[0], STDIN_FILENO);
-		close(pipefd[1]);
-		execvp(argv2[0], argv2);
-		perror("exec");
-		return 1;
-	}
-
-	close(pipefd[0]);
-	close(pipefd[1]);
-	// Wait for everything to finish and exit.
-	waitpid(pid1);
-
 	return 0;
 }

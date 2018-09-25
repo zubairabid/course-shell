@@ -29,28 +29,30 @@ int run(char **argv, int argc) {
   // printf("About to split pipes\n");
   char ***all_com = NULL;
   all_com = pipe_split(argv, argc, all_com);
-  for (char **i = *all_com; i != NULL; i = i + 1) {
-    printf("%s\n", *i);
-    for (char *j = *i; j != NULL; j = j + 1) {
-      printf("I lived agains, bih\n");
-      printf("%s ", j);
-    }
-    printf("\n");
-    printf("%s\n", *i);
-  }
+  // for (char **i = *all_com; i != NULL; i = i + 1) {
+  //   printf("%s\n", *i);
+  //   // for (char *j = *i; j != NULL; j = j + 1) {
+  //   //   printf("%s ", j);
+  //   // }
+  //   // printf("\n");
+  //   // printf("%s\n", *i);
+  // }
 
-  int fdes[2], ret;
+  int fdes[2] = {0, 0}, ret;
   pid_t pid;
   int fd_in = 0;
 
   while(*all_com != NULL) {
+    printf("I lived agains, bih %p \n", all_com);
     pipe(fdes);
+    printf("Pipe made\n");
     pid = fork();
     if (pid == -1) {
       perror("fork");
       exit(EXIT_FAILURE);
     }
     else if (pid == 0) {
+      printf("Inside child\n");
       dup2(fd_in, 0);
       if (*(all_com + 1) != NULL)
         dup2(fdes[1], 1);
