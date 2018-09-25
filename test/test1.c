@@ -19,8 +19,8 @@ int main() {
 
 	char *args[128][128] = {
 		{"ls",  NULL},
-		{"grep", "e", NULL},
-		{"sort", NULL},
+		// {"grep", "e", NULL},
+		// {"sort", NULL},
 		{NULL}
 	};
 

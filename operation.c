@@ -22,51 +22,77 @@
  * Returns: Exit status
  */
 int run(char **argv, int argc) {
+  // Builtin non fork functions
+  if (strcmp(argv[0],"cd") == 0) {
+    return shcd(argv, argc);
+  }
+  else if (strcmp(argv[0],"quit") == 0) {
+    return shexit();
+  }
 
   // Flow: check for all pipes, split commands and parent/child processes
   // accordingly. Then for each of these, process with redirection etc as
   // per normal
-  // printf("About to split pipes\n");
-  char ***all_com = NULL;
-  all_com = pipe_split(argv, argc, all_com);
-  // for (char **i = *all_com; i != NULL; i = i + 1) {
-  //   printf("%s\n", *i);
-  //   // for (char *j = *i; j != NULL; j = j + 1) {
-  //   //   printf("%s ", j);
-  //   // }
-  //   // printf("\n");
-  //   // printf("%s\n", *i);
-  // }
+
+
+  char *args[128][128];
+
+  int m = 0, n = 0;
+  for (int i = 0; i < argc; i++) {
+    if (strcmp(argv[i],"|") != 0) {
+      args[m][n++] = argv[i];
+    }
+    else {
+      args[m][n] = NULL;
+      m++;
+      n = 0;
+    }
+  }
+  args[++m][0] = NULL;
+
 
   int fdes[2] = {0, 0}, ret;
   pid_t pid;
   int fd_in = 0;
+  int c = 0, i;
 
-  while(*all_com != NULL) {
-    printf("I lived agains, bih %p \n", all_com);
+
+
+  while(*args[c] != NULL) {
+
+    char *command[128];
+    for (i = 0; args[c][i] != NULL; i++) {
+			command[i] = args[c][i];
+		}
+    command[i] = NULL;
     pipe(fdes);
-    printf("Pipe made\n");
+
     pid = fork();
     if (pid == -1) {
       perror("fork");
       exit(EXIT_FAILURE);
     }
     else if (pid == 0) {
-      printf("Inside child\n");
       dup2(fd_in, 0);
-      if (*(all_com + 1) != NULL)
-        dup2(fdes[1], 1);
-      close(fdes[0]);
-      ret = prex(*all_com);
+
+			close(fdes[0]);
+
+      if (*args[c+1] != NULL) {
+				dup2(fdes[1], 1);
+			}
+      c++;
+      ret = prex(command);
+      exit(0);
     }
     else {
       wait(NULL);
       close(fdes[1]);
       fd_in = fdes[0];
-      all_com++;
+      c++;
     }
   }
-
+  int status;
+  waitpid(pid, &status, WUNTRACED);
   return 1;
 }
 
@@ -75,8 +101,9 @@ int run(char **argv, int argc) {
  * Continues normal execution if nothing else happens
  */
 int prex(char **argv) {
-  int argc = 1; // Length of the string to process is in this
-  while(*argv != NULL)
+  // printf("Got to pre-executor\n");
+  int argc = 0; // Length of the string to process is in this
+  while(argv[argc] != NULL)
     argc++;
 
   for(int i = 0; i < argc; i++) {
@@ -103,12 +130,7 @@ int exe(char **argv, int argc) {
   }
 
   // Running builting functions
-  if (strcmp(argv[0],"cd") == 0) {
-    return shcd(argv, argc);
-  }
-  else if (strcmp(argv[0],"quit") == 0) {
-    return shexit();
-  }
+
   else if (strcmp(argv[0],"pwd") == 0) {
     return shpwd();
   }
