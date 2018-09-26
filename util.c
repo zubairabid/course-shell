@@ -43,7 +43,7 @@ char **parseline(char *line, int *argc) {
     // extract the next token
     token = strtok(NULL, DELIM_TOKEN);
   } while(token != NULL);
-
+  // tokens[count++] = "\0";
   // Saves the number of tokens extracted into pointer 'argc'
   *argc = count;
 
@@ -85,7 +85,7 @@ char **splitlines(char *line, int *num) {
     // extract the next token
     command = strtok(NULL, ";");
   } while(command != NULL);
-
+  // commands[count++] = "\0";
   // Saves the number of tokens extracted into pointer 'num'
   *num = count;
 
