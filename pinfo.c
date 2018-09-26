@@ -50,7 +50,7 @@ int pinfo(char **argv, int argc) {
   strcat(path, procpid);
   strcat(path, "/exe");
   strcat(path, "\0");
-  if(readlink(path, line, 4096) == -1) {
+  if(readlink(path, line, 1024) == -1) {
     perror("The process you requested does not exist");
     return 1;
   }

@@ -37,6 +37,12 @@ int redirect(char **argv, int argc) {
     }
   }
 
+  printf("\nIn redirect: executed command\n");
+  for(int i = 0; i < temp; i++) {
+    printf("%s ", command[i]);
+  }
+  printf("\n\n");
+
   // Invalid syntax
   if(temp == argc - 1) {
     return 0;

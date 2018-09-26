@@ -109,6 +109,19 @@ int prex(char **argv) {
   while(argv[argc] != NULL)
     argc++;
 
+  printf("Printing command that's gonna be executed\n");
+  for(int i = 0; i < argc; i++) {
+    printf("%s ", argv[i]);
+  }
+  printf("\n\n");
+
+  for(int i = 0; i < argc; i++) {
+    for(int j = 0; j < strlen(argv[i]); j++)
+      printf("%d ", (int)argv[i][j]);
+    printf("\t");
+  }
+  printf("\n\n");
+
   for(int i = 0; i < argc; i++) {
     if (argv[i][0] == '<' || argv[i][0] == '>') {
       return redirect(argv, argc);
@@ -156,6 +169,12 @@ int exe(char **argv, int argc) {
 }
 
 int startProc(char **argv, int argc) {
+
+  printf("Inside process: thing running is\n");
+  for(int i = 0; i < argc; i++) {
+    printf("%s ", argv[i]);
+  }
+  printf("\n\n");
 
   int pid, wpid, status;
 

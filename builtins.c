@@ -104,3 +104,12 @@ int shsetenv(char **argv, int argc) {
 
   return setenv(argv[1], val, 1)==0?1:0;
 }
+
+int shunsetenv(char **argv, int argc) {
+  if (argc != 2) {
+    printf("Usage: unsetenv var\n");
+    return 1;
+  }
+
+  return unsetenv(argv[1])==0?1:0;
+}
