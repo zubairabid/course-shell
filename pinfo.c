@@ -21,6 +21,7 @@ int pinfo(char **argv, int argc) {
   strcpy(path, "/proc/");
   strcat(path, procpid);
   strcat(path, "/stat");
+  strcat(path, "\0");
 
   int temp;
   ssize_t read;
@@ -48,11 +49,12 @@ int pinfo(char **argv, int argc) {
   strcpy(path, "/proc/");
   strcat(path, procpid);
   strcat(path, "/exe");
+  strcat(path, "\0");
   if(readlink(path, line, 4096) == -1) {
     perror("The process you requested does not exist");
     return 1;
   }
-  line[4095] = '\0';
+  strcat(line, "\0");
   printf("Executable path - %s\n",line);
 
   return 1;

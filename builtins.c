@@ -76,6 +76,7 @@ int remind(char **argv, int argc) {
     strcat(text, " ");
     strcat(text, argv[i]);
   }
+  strcat(text, "\0");
   switch (fork()) {
     case 0:
       sleep(time);
@@ -83,4 +84,23 @@ int remind(char **argv, int argc) {
       break;
   }
   return 1;
+}
+
+
+int shsetenv(char **argv, int argc) {
+  char* val;
+  // int ret;
+  if (argc != 2 && argc!= 3) {
+    printf("Usage: setenv var [value]\n");
+    return 1;
+  }
+
+  if (argc == 2) {
+    val = "";
+  }
+  else {
+    val = argv[2];
+  }
+
+  return setenv(argv[1], val, 1)==0?1:0;
 }

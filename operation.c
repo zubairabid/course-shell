@@ -29,6 +29,9 @@ int run(char **argv, int argc) {
   else if (strcmp(argv[0],"quit") == 0) {
     return shexit();
   }
+  else if (strcmp(argv[0], "setenv") == 0) {
+    return shsetenv(argv, argc);
+  }
 
   // Flow: check for all pipes, split commands and parent/child processes
   // accordingly. Then for each of these, process with redirection etc as
