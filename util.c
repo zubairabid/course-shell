@@ -26,6 +26,10 @@ char **parseline(char *line, int *argc) {
   char *token;
   char **tokens = (char**)malloc(bsize * sizeof(char*));
 
+  for(int i = 0; i < bsize; i++) {
+    tokens[i] = NULL;
+  }
+
   // Tokenizing the string: initial token extracted
   token = strtok(line, DELIM_TOKEN);
   do {
@@ -43,6 +47,9 @@ char **parseline(char *line, int *argc) {
     // extract the next token
     token = strtok(NULL, DELIM_TOKEN);
   } while(token != NULL);
+  for(int i = count + 1; i < bsize; i++) {
+    tokens[i] = NULL;
+  }
   // tokens[count++] = "\0";
   // Saves the number of tokens extracted into pointer 'argc'
   *argc = count;
@@ -101,6 +108,10 @@ void sig_int(int signum) {
 }
 
 void sig_stop(int signum) {
+
+}
+
+void sig_tstp(int signum) {
 
 }
 

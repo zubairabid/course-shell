@@ -47,8 +47,8 @@ int loop() {
 
 	signal(SIGINT, sig_int);
 	signal(SIGSTOP, sig_stop);
+	signal(SIGTSTP, sig_tstp);
 	// Print any process IDs
-	signal(SIGCHLD, sig_child);
 	do {
 
 		//			FLOW: Display prompt and get input

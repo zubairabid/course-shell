@@ -32,18 +32,28 @@ int run(char **argv, int argc) {
   else if (strcmp(argv[0], "setenv") == 0) {
     return shsetenv(argv, argc);
   }
+  else if (strcmp(argv[0], "unsetenv") == 0) {
+    return shunsetenv(argv, argc);
+  }
+
+
+  prex(argv);
+  return 1;
 
   // Flow: check for all pipes, split commands and parent/child processes
   // accordingly. Then for each of these, process with redirection etc as
   // per normal
 
 
+
+  // Stores all comss
   char *args[128][128];
 
   int m = 0, n = 0;
   for (int i = 0; i < argc; i++) {
     if (strcmp(argv[i],"|") != 0) {
       args[m][n++] = argv[i];
+      strcat(args[m][n], "\0");
     }
     else {
       args[m][n] = NULL;
@@ -52,6 +62,15 @@ int run(char **argv, int argc) {
     }
   }
   args[++m][0] = NULL;
+
+
+  printf("THIS IS A TEST\n");
+  for(int i = 0; *args[i] != NULL; i++) {
+    for(int j = 0; args[i][j] != NULL; i++) {
+      printf("%s", args[i][j]);
+    }
+    printf("\n");
+  }
 
 
   int fdes[2] = {0, 0}, ret;
@@ -109,18 +128,18 @@ int prex(char **argv) {
   while(argv[argc] != NULL)
     argc++;
 
-  printf("Printing command that's gonna be executed\n");
-  for(int i = 0; i < argc; i++) {
-    printf("%s ", argv[i]);
-  }
-  printf("\n\n");
-
-  for(int i = 0; i < argc; i++) {
-    for(int j = 0; j < strlen(argv[i]); j++)
-      printf("%d ", (int)argv[i][j]);
-    printf("\t");
-  }
-  printf("\n\n");
+  // printf("Printing command that's gonna be executed\n");
+  // for(int i = 0; i < argc; i++) {
+  //   printf("%s ", argv[i]);
+  // }
+  // printf("\n\n");
+  //
+  // for(int i = 0; i < argc; i++) {
+  //   for(int j = 0; j < strlen(argv[i]); j++)
+  //     printf("%d ", (int)argv[i][j]);
+  //   printf("\t");
+  // }
+  // printf("\n\n");
 
   for(int i = 0; i < argc; i++) {
     if (argv[i][0] == '<' || argv[i][0] == '>') {

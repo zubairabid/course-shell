@@ -50,7 +50,7 @@ In order to exit the shell, type `exit`
  - [x] I/O Redirection
  - [x] Command Redirection, pipes
  - [x] I/O+pipes
- - [ ] setenv, getenv
+ - [x] setenv, getenv
  - [ ] jobs, kjo, overkill
  - [ ] fg, bg, ^Z
  - [ ] quit, ^C
