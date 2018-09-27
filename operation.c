@@ -37,8 +37,8 @@ int run(char **argv, int argc) {
   }
 
 
-  prex(argv);
-  return 1;
+  // prex(argv);
+  // return 1;
 
   // Flow: check for all pipes, split commands and parent/child processes
   // accordingly. Then for each of these, process with redirection etc as
@@ -48,6 +48,11 @@ int run(char **argv, int argc) {
 
   // Stores all comss
   char *args[128][128];
+  for(int i=0;i<128;i++)
+  {
+    for(int j=0;j<128;j++)
+      args[i][j] = NULL;
+  }
 
   int m = 0, n = 0;
   for (int i = 0; i < argc; i++) {
@@ -64,13 +69,13 @@ int run(char **argv, int argc) {
   args[++m][0] = NULL;
 
 
-  printf("THIS IS A TEST\n");
-  for(int i = 0; *args[i] != NULL; i++) {
-    for(int j = 0; args[i][j] != NULL; i++) {
-      printf("%s", args[i][j]);
-    }
-    printf("\n");
-  }
+  // printf("THIS IS A TEST\n");
+  // for(int i = 0; *args[i] != NULL; i++) {
+  //   for(int j = 0; args[i][j] != NULL; i++) {
+  //     printf("%s", args[i][j]);
+  //   }
+  //   printf("\n");
+  // }
 
 
   int fdes[2] = {0, 0}, ret;
@@ -189,11 +194,11 @@ int exe(char **argv, int argc) {
 
 int startProc(char **argv, int argc) {
 
-  printf("Inside process: thing running is\n");
-  for(int i = 0; i < argc; i++) {
-    printf("%s ", argv[i]);
-  }
-  printf("\n\n");
+  // printf("Inside process: thing running is\n");
+  // for(int i = 0; i < argc; i++) {
+  //   printf("%s ", argv[i]);
+  // }
+  // printf("\n\n");
 
   int pid, wpid, status;
 

@@ -58,10 +58,10 @@ int loop() {
 		//			FLOW: Split lines into multiple commands by ';' etc
 		//			and count them into num (passed as a pointer)
 		commands = splitlines(line, &num);
-
+		// printf("NUM SHOULD BE:%d\n", num);
 		//			FLOW: Process each command extracted
 		for(i = 0; i < num; i++) {
-			command = commands[i];
+			strcpy(command, commands[i]);
 
 			//			FLOW: Get all tokens in the each command
 			//			and store the count in argc
